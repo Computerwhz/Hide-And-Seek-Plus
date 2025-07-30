@@ -1,4 +1,4 @@
-Kenshins Hide And Seek Plus
+Hide And Seek Plus
 ======
 
 An updated and mainatined version of kenshinshideandseek
