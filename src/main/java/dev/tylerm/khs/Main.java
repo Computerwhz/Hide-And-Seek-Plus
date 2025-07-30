@@ -54,11 +54,11 @@ public class Main extends JavaPlugin implements Listener {
 
 		long start = System.currentTimeMillis();
 
-		getLogger().info("Loading Kenshin's Hide and Seek Plus");
+		getLogger().info("Loading Hide and Seek Plus");
 		Main.instance = this;
 
 		getLogger().info("Getting minecraft version...");
-		this.updateVersion();;
+		this.updateVersion();
 
 		try {
 			getLogger().info("Loading config.yml...");
