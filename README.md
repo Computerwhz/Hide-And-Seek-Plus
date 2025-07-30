@@ -1,7 +1,7 @@
 Hide And Seek Plus
 ======
 
-An updated and mainatined version of kenshinshideandseek
+An updated and maintained version of kenshinshideandseek
 You can find the original
 [here](https://g.freya.cat/freya/kenshinshideandseek)
 
