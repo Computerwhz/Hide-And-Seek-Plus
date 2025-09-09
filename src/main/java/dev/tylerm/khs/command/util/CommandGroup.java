@@ -50,8 +50,11 @@ public class CommandGroup {
 		if (data == null) {
 			player.sendMessage(
 					String.format("%s%sKenshin's Hide and Seek %s(%s1.7.6%s)\n", ChatColor.AQUA, ChatColor.BOLD, ChatColor.GRAY, ChatColor.WHITE, ChatColor.GRAY) +
-							String.format("%sAuthor: %s[KenshinEto]\n", ChatColor.GRAY, ChatColor.WHITE) +
+							String.format("%sOriginal Creator: %s[KenshinEto]\n", ChatColor.GRAY, ChatColor.WHITE) +
+							String.format("%sCurrent Author: %s[Computerwhz]\n", ChatColor.GRAY, ChatColor.WHITE) +
+							String.format("%sSource Code: %shttps://github.com/Computerwhz/Hide-And-Seek-Plus", ChatColor.GRAY, ChatColor.WHITE) +
 							String.format("%sHelp Command: %s/hs %shelp", ChatColor.GRAY, ChatColor.AQUA, ChatColor.WHITE)
+
 			);
 			return;
 		}

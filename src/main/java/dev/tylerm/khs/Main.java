@@ -54,7 +54,8 @@ public class Main extends JavaPlugin implements Listener {
 
 		long start = System.currentTimeMillis();
 
-		getLogger().info("Loading Hide and Seek Plus");
+		getLogger().info("Loading Hide and Seek Plus\n Originally Created by: KenshinEto\n Maintained and Updated by: Computerwhz\n");
+		getLogger().info("Source code: https://github.com/Computerwhz/Hide-And-Seek-Plus\n Original Source code: https://g.freya.cat/freya/kenshinshideandseek");
 		Main.instance = this;
 
 		getLogger().info("Getting minecraft version...");

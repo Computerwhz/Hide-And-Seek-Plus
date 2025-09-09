@@ -28,9 +28,9 @@ public class Disguise {
     static {
         if(Main.getInstance().supports(9)) {
             Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-            hidden = board.getTeam("KHS_Collision");
+            hidden = board.getTeam("HSP_Collision");
             if (hidden == null) {
-                hidden = board.registerNewTeam("KHS_Collision");
+                hidden = board.registerNewTeam("HSP_Collision");
             }
             hidden.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
             hidden.setCanSeeFriendlyInvisibles(false);
@@ -42,7 +42,11 @@ public class Disguise {
         this.material = material;
         this.solid = false;
         respawnFallingBlock();
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0,false, false));
+        for (Player other : Bukkit.getOnlinePlayers()){
+            if(!other.equals(player)){
+                other.hidePlayer(Main.getInstance(), hider);
+            }
+        }
         if(Main.getInstance().supports(9)) {
             hidden.addEntry(player.getName());
         } else {
@@ -60,7 +64,11 @@ public class Disguise {
         }
         if(solid)
             sendBlockUpdate(blockLocation, Material.AIR);
-        hider.removePotionEffect(PotionEffectType.INVISIBILITY);
+        for (Player other : Bukkit.getOnlinePlayers()){
+            if(!other.equals(hider)){
+                other.showPlayer(Main.getInstance(), hider);
+            }
+        }
         if(Main.getInstance().supports(9)) {
             hidden.removeEntry(hider.getName());
         } else {

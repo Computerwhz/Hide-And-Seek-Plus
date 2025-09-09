@@ -50,6 +50,7 @@ public class WorldLoader {
 				return;
 			}
 			world.setAutoSave(false);
+            world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true);
 		});
     }
  
