@@ -151,9 +151,17 @@ public class PlayerLoader {
     public static void joinPlayer(Player player, Map map){
         map.getLobby().teleport(player);
         loadPlayer(player);
-        if (lobbyStartItem != null && (!lobbyItemStartAdmin || player.hasPermission("hideandseek.start")))
-            player.getInventory().setItem(lobbyItemStartPosition, lobbyStartItem);
-        if (lobbyLeaveItem != null)
+        if (lobbyStartItem != null){
+            if (lobbyItemStartAdmin.equals("true")) {
+                if (player.hasPermission("hs.start")) {
+                    player.getInventory().setItem(lobbyItemStartPosition, lobbyStartItem);
+                }
+            }
+            else {
+                player.getInventory().setItem(lobbyItemStartPosition, lobbyStartItem);
+            }
+        }
+        if (lobbyLeaveItem != null && (player.hasPermission("hs.leave")))
             player.getInventory().setItem(lobbyItemLeavePosition, lobbyLeaveItem);
     }
 

@@ -38,7 +38,8 @@ public class Config {
 		databasePort,
 		databaseUser,
 		databasePass,
-		databaseName;
+		databaseName,
+        lobbyItemStartAdmin;
 	
 	public static boolean
 		nameTagsVisible,
@@ -56,7 +57,6 @@ public class Config {
 		lobbyCountdownEnabled,
 		seekerPing,
 		bungeeLeave,
-		lobbyItemStartAdmin,
 		leaveOnEnd,
 		mapSaveEnabled,
 		allowNaturalCauses,
@@ -229,7 +229,7 @@ public class Config {
 		}
 		if (config.getBoolean("lobbyItems.start.enabled")) {
 			lobbyStartItem = createItemStack("lobbyItems.start");
-			lobbyItemStartAdmin = config.getBoolean("lobbyItems.start.adminOnly");
+			lobbyItemStartAdmin = config.getString("lobbyItems.start.adminOnly");
 			lobbyItemStartPosition = config.getInt("lobbyItems.start.position");
 		}
 

@@ -1,6 +1,6 @@
 name: HideAndSeekPlus
 main: dev.tylerm.khs.Main
-version: 1.0.0
+version: '${project.version}'
 authors:
   - Computerwhz
   - KenshinEto

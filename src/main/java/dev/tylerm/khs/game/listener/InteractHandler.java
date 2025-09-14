@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.messages.ActionBar;
 import dev.tylerm.khs.Main;
 import dev.tylerm.khs.game.Board;
 import dev.tylerm.khs.game.util.Status;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,21 +51,39 @@ public class InteractHandler implements Listener {
             Main.getInstance().getGame().leave(event.getPlayer());
         }
 
-        if (temp.isSimilar(lobbyStartItem) && event.getPlayer().hasPermission("hideandseek.start")) {
-            event.setCancelled(true);
-            if (Main.getInstance().getGame().checkCurrentMap()) {
-                event.getPlayer().sendMessage(errorPrefix + message("GAME_SETUP"));
-                return;
+        if (temp.isSimilar(lobbyStartItem)) {
+
+            if (lobbyItemStartAdmin.equals("true")) {
+                if (event.getPlayer().hasPermission("hs.start")){
+                    runStartItem(event);
+                }
+                else{
+                    event.getPlayer().getInventory().remove(temp);
+                    event.getPlayer().sendMessage(errorPrefix + "You do not have permission to use that");
+                }
+            } else if (lobbyItemStartAdmin.equals("hybrid")) {
+                if (!event.getPlayer().hasPermission("hs.start")) {
+                    List<Player> gameMasters = new ArrayList<>();
+
+                    for (Player p : Main.getInstance().getBoard().getPlayers()) {
+                        if (p.hasPermission("hs.start")) {
+                            gameMasters.add(p);
+                        }
+                    }
+                    if (!gameMasters.isEmpty()) {
+                        event.getPlayer().sendMessage(errorPrefix + "There is a Game Master in your lobby please wait for them to start the game");
+                    } else {
+                        runStartItem(event);
+                    }
+                }
+                else {
+                    runStartItem(event);
+                }
+            } else if (lobbyItemStartAdmin.equals("false")) {
+                runStartItem(event);
             }
-            if (Main.getInstance().getGame().getStatus() != Status.STANDBY) {
-                event.getPlayer().sendMessage(errorPrefix + message("GAME_INPROGRESS"));
-                return;
-            }
-            if (Main.getInstance().getBoard().size() < minPlayers) {
-                event.getPlayer().sendMessage(errorPrefix + message("START_MIN_PLAYERS").addAmount(minPlayers));
-                return;
-            }
-            Main.getInstance().getGame().start();
+
+
         }
     }
 
@@ -180,5 +199,22 @@ public class InteractHandler implements Listener {
         playerHeadMeta.setLore(lore);
         playerHead.setItemMeta(playerHeadMeta);
         return playerHead;
+    }
+
+    private void runStartItem(PlayerInteractEvent event){
+        event.setCancelled(true);
+        if (Main.getInstance().getGame().checkCurrentMap()) {
+            event.getPlayer().sendMessage(errorPrefix + message("GAME_SETUP"));
+            return;
+        }
+        if (Main.getInstance().getGame().getStatus() != Status.STANDBY) {
+            event.getPlayer().sendMessage(errorPrefix + message("GAME_INPROGRESS"));
+            return;
+        }
+        if (Main.getInstance().getBoard().size() < minPlayers) {
+            event.getPlayer().sendMessage(errorPrefix + message("START_MIN_PLAYERS").addAmount(minPlayers));
+            return;
+        }
+        Main.getInstance().getGame().start();
     }
 }

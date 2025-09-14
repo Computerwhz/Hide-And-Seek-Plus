@@ -262,7 +262,10 @@ lobbyItems:
     position: 0
     model-data: 0
     enabled: true
-    adminOnly: true
+    # true only people with hs.start will be able to use the game start item
+    # hybrid anyone can start the game if there is no-one with hs.start in the lobby
+    # false anyone can start the game regardless of the hs.start permission
+    adminOnly: hybrid
 
 # Below are the two items given to you when you join the game as a spectator. One toggles flight mode, and the other
 # opens a gui to teleport to other players! Just like the lobby items, you can customize the material, name, lore,
