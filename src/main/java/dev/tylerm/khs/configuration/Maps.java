@@ -106,7 +106,9 @@ public class Maps {
         double x = data.getDouble("spawns."+spawn+".x");
         double y = data.getDouble("spawns."+spawn+".y");
         double z = data.getDouble("spawns."+spawn+".z");
-        return new Location(world, x, y, z);
+        float yaw = (float) data.getDouble("spawns."+spawn+".yaw");
+        float pitch = (float) data.getDouble("spawns."+spawn+".pitch");
+        return new Location(world, x, y, z, yaw, pitch);
     }
 
     private static void saveMaps() {

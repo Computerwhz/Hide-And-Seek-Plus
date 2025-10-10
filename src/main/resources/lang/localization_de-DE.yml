@@ -32,6 +32,7 @@ Localization:
   GAME_JOIN: "{PLAYER} hat die Hide and Seek Lobby betreten."
   GAME_JOIN_SPECTATOR: "Du bist als Beobachter einem laufenden Spiel beigetreten."
   GAME_LEAVE: "{PLAYER} hat die Hide and Seek Lobby verlassen."
+  GAME_BLOCKCHANGE: "Du kannst den Block jetzt nicht ändern."
   LOBBY_IN_USE: "Die Lobby kann nicht verändert werden, solange die Lobby nicht leer ist."
   CONFIG_RELOAD: "Konfiguration neu geladen."
   MAPSAVE_INPROGRESS: "Weltkarte wird aktuell gespeichert. Versuche es später nochmal."
