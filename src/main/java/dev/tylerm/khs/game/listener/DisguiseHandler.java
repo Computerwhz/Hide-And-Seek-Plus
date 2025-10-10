@@ -60,7 +60,6 @@ public class DisguiseHandler implements Listener {
                 Player player = event.getPlayer();
                 int id = packet.getIntegers().read(0);
                 Disguise disguise = Main.getInstance().getDisguiser().getByEntityID(id);
-                if(disguise == null) disguise = Main.getInstance().getDisguiser().getByHitBoxID(id);
                 if(disguise == null) return;
                 
                 if(disguise.getPlayer().getGameMode() == GameMode.CREATIVE) return;

@@ -31,11 +31,6 @@ public class Disguiser {
         return disguises.values().stream().filter(disguise -> disguise.getEntityID() == ID).findFirst().orElse(null);
     }
 
-    @Nullable
-    public Disguise getByHitBoxID(int ID){
-        return disguises.values().stream().filter(disguise -> disguise.getHitBoxID() == ID).findFirst().orElse(null);
-    }
-
     public void check(){
         for(HashMap.Entry<Player, Disguise> set : disguises.entrySet()){
             Disguise disguise = set.getValue();

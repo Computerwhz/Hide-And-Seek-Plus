@@ -7,14 +7,22 @@ import dev.tylerm.khs.game.Game;
 import dev.tylerm.khs.game.PlayerLoader;
 import dev.tylerm.khs.game.util.Status;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.UUID;
 
 import static dev.tylerm.khs.configuration.Config.*;
 import static dev.tylerm.khs.configuration.Localization.message;
@@ -23,13 +31,34 @@ public class DamageHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
         Board board = Main.getInstance().getBoard();
         Game game = Main.getInstance().getGame();
-        // If you are not a player, get out of here
-        if (!(event.getEntity() instanceof Player)) return;
-        // Define variables
-        Player player = (Player) event.getEntity();
+        Player player = null;
         Player attacker = null;
+        // If you are not a player, get out of here
+        if (!(event.getEntity() instanceof Player || event.getEntity() instanceof FallingBlock)) return;
+
+        if (entity instanceof FallingBlock) {
+            UUID ownerUUID = getMetadataUUID(JavaPlugin.getProvidingPlugin(getClass()), entity);
+            if (ownerUUID == null) return;                 // no link → ignore
+            Player owner = Bukkit.getPlayer(ownerUUID);
+            if (owner == null) return;                     // owner offline/not found
+
+            double damage = event.getFinalDamage();
+            Entity damager = (event instanceof EntityDamageByEntityEvent e) ? e.getDamager() : null;
+
+            // Prevent the block from taking damage / disappearing (optional)
+            event.setCancelled(true);
+
+            // Relay to the player (this will fire a new damage event on the player)
+            if (damager != null) owner.damage(damage, damager);
+            return;
+        }
+        else if (event.getEntity() instanceof Player) {
+            player = (Player) event.getEntity();
+        }
+        // Define variables
         // If map is not setup we won't be able to process on it :o
         if (!game.isCurrentMapValid()) { return; }
         // If there is an attacker, find them
@@ -97,9 +126,10 @@ public class DamageHandler implements Listener {
         if(delayedRespawn && !respawnAsSpectator){
             game.getCurrentMap().getGameSeekerLobby().teleport(player);
             player.sendMessage(messagePrefix + message("RESPAWN_NOTICE").addAmount(delayedRespawnDelay));
+            Player finalPlayer = player;
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> {
                 if(game.getStatus() == Status.PLAYING){
-                    game.getCurrentMap().getGameSpawn().teleport(player);
+                    game.getCurrentMap().getGameSpawn().teleport(finalPlayer);
                 }
             }, delayedRespawnDelay * 20L);
         } else {
@@ -133,4 +163,24 @@ public class DamageHandler implements Listener {
         Main.getInstance().getDisguiser().reveal(event.getEntity());
     }
 
+    public static UUID getMetadataUUID(JavaPlugin plugin, Entity entity) {
+        if (!entity.hasMetadata("Player_UUID")) return null;
+
+        List<MetadataValue> values = entity.getMetadata("Player_UUID");
+        for (MetadataValue value : values) {
+            if (value.getOwningPlugin() == plugin) {
+                Object raw = value.value();
+                if (raw instanceof UUID) {
+                    return (UUID) raw;
+                }
+                if (raw instanceof String) {
+                    try {
+                        return UUID.fromString((String) raw);
+                    } catch (IllegalArgumentException ignored) {
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

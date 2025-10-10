@@ -9,6 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -20,7 +23,6 @@ public class Disguise {
     final Player hider;
     final Material material;
     FallingBlock block;
-    AbstractHorse hitBox;
     Location blockLocation;
     boolean solid, solidify, solidifying;
     static Team hidden;
@@ -57,11 +59,6 @@ public class Disguise {
     public void remove(){
         if(block != null)
             block.remove();
-        if(hitBox != null){
-            if(Main.getInstance().supports(9))
-                hidden.removeEntry(hitBox.getUniqueId().toString());
-            hitBox.remove();
-        }
         if(solid)
             sendBlockUpdate(blockLocation, Material.AIR);
         for (Player other : Bukkit.getOnlinePlayers()){
@@ -81,11 +78,6 @@ public class Disguise {
         return block.getEntityId();
     }
 
-    public int getHitBoxID() {
-        if(hitBox == null) return -1;
-        return hitBox.getEntityId();
-    }
-
     public Player getPlayer() {
         return hider;
     }
@@ -101,19 +93,14 @@ public class Disguise {
             if(!solid) {
                 solid = true;
                 blockLocation = hider.getLocation().getBlock().getLocation();
-                respawnHitbox();
+
             }
             sendBlockUpdate(blockLocation, material);
         } else if(solid){
             solid = false;
-            if(Main.getInstance().supports(9))
-                hidden.removeEntry(hitBox.getUniqueId().toString());
-            hitBox.remove();
-            hitBox = null;
             sendBlockUpdate(blockLocation, Material.AIR);
         }
         toggleEntityVisibility(block, !solid);
-        teleportEntity(hitBox, true);
         teleportEntity(block, solid);
     }
 
@@ -167,28 +154,9 @@ public class Disguise {
         if (Main.getInstance().supports(10)) {
             block.setGravity(false);
         }
+        block.setMetadata("Player_UUID", new FixedMetadataValue(JavaPlugin.getProvidingPlugin(getClass()), hider.getUniqueId()));
         block.setDropItem(false);
         block.setInvulnerable(true);
-    }
-
-    private void respawnHitbox(){
-        if (Main.getInstance().supports(11)) {
-            hitBox = (AbstractHorse) hider.getLocation().getWorld().spawnEntity(hider.getLocation().add(0, 1000, 0), EntityType.SKELETON_HORSE);
-        } else {
-            hitBox = (AbstractHorse) hider.getLocation().getWorld().spawnEntity(hider.getLocation().add(0, 1000, 0), EntityType.HORSE);
-            hitBox.setVariant(Horse.Variant.SKELETON_HORSE);
-        }
-        if (Main.getInstance().supports(10)) {
-            hitBox.setGravity(false);
-        }
-        hitBox.setAI(false);
-        hitBox.setInvulnerable(true);
-        hitBox.setCanPickupItems(false);
-        hitBox.setCollidable(false);
-        hitBox.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0,false, false));
-        if(Main.getInstance().supports(9)){
-            hidden.addEntry(hitBox.getUniqueId().toString());
-        }
     }
 
     public void startSolidifying() {
