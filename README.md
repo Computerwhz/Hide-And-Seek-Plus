@@ -2,8 +2,9 @@ Hide And Seek Plus
 ======
 
 An updated and maintained version of kenshinshideandseek
-You can find the original
+You can find the original)
 [here](https://g.freya.cat/freya/kenshinshideandseek)
+This also includes code from [Bensonheimer992/Hide-and-Seek](https://github.com/Bensonheimer992/Hide-and-Seek)
 
 [Documentation](https://computerwhz.gitbook.io/hide-and-seek-plus/)
 -----------
