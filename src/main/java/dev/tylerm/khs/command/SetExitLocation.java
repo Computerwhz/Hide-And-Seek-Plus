@@ -17,6 +17,8 @@ public class SetExitLocation implements ICommand {
 			Config.addToConfig("exit.x", sender.getLocation().getBlockX());
 			Config.addToConfig("exit.y", sender.getLocation().getBlockY());
 			Config.addToConfig("exit.z", sender.getLocation().getBlockZ());
+			Config.addToConfig("exit.yaw", sender.getLocation().getYaw());
+			Config.addToConfig("exit.pitch", sender.getLocation().getPitch());
 			Config.addToConfig("exit.world", sender.getLocation().getWorld().getName());
 			Config.exitPosition = Location.from(sender);
 			Config.saveConfig();

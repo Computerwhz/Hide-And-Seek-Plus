@@ -4,6 +4,7 @@ version: '${project.version}'
 authors:
   - Computerwhz
   - KenshinEto
+  - Bensonheimer992
 load: STARTUP
 api-version: 1.13
 depend: [ProtocolLib]
