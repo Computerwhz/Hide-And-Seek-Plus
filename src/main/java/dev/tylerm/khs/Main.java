@@ -66,8 +66,25 @@ public class Main extends JavaPlugin implements Listener {
         updateVersion();
         getLogger().info("Loading Hide and Seek Plus\n Originally Created by: KenshinEto\n Maintained and Updated by: Computerwhz\n");
         getLogger().info("Source code: https://github.com/Computerwhz/Hide-And-Seek-Plus\n Original Source code: https://g.freya.cat/freya/kenshinshideandseek");
+        Main.instance = this;
 
-		getLogger().info("Getting minecraft version...");
+        try {
+            getLogger().info("Loading config.yml...");
+            Config.loadConfig();
+            getLogger().info("Loading maps.yml...");
+            Maps.loadMaps();
+            getLogger().info("Loading localization.yml...");
+            Localization.loadLocalization();
+            getLogger().info("Loading items.yml...");
+            Items.loadItems();
+            getLogger().info("Loading leaderboard.yml...");
+            Leaderboard.loadLeaderboard();
+        } catch (Exception e) {
+            getLogger().severe(e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         getLogger().info("Creating internal scoreboard...");
         this.board = new Board();
         getLogger().info("Connecting to database...");
