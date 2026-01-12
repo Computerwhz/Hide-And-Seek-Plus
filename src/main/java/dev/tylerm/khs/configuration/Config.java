@@ -40,6 +40,7 @@ public class Config {
 		databasePass,
 		databaseName,
         lobbyItemStartAdmin;
+		databaseName;
 	
 	public static boolean
 		nameTagsVisible,
@@ -51,6 +52,8 @@ public class Config {
 		alwaysGlow,
 		glowEnabled,
 		glowStackable,
+		blockEnabled,
+	    blockStackable,
 		pvpEnabled,
 		autoJoin,
 		teleportToExit,
@@ -104,6 +107,7 @@ public class Config {
 		lobbyLeaveItem,
 		lobbyStartItem,
 		glowPowerupItem,
+	    changeBlockItem,
 		flightToggleItem,
 		teleportItem;
 
@@ -162,6 +166,11 @@ public class Config {
 		if (glowEnabled) {
 			glowPowerupItem = createItemStack("glow");
 		}
+
+		//Change Block
+		blockEnabled = config.getBoolean("changeblock.enabled");
+		blockStackable = config.getBoolean("changeblock.stackable");
+		changeBlockItem = createItemStack("changeblock");
 
 		//Lobby
         startingSeekerCount = Math.max(1, config.getInt("startingSeekerCount"));

@@ -81,6 +81,7 @@ public class PlayerLoader {
     }
 
     public static void resetPlayer(Player player, Board board){
+        Map map = Main.getInstance().getGame().getCurrentMap();
         if(board.isSpectator(player)) return;
         loadPlayer(player);
         if (board.isSeeker(player)) {
@@ -119,6 +120,9 @@ public class PlayerLoader {
                 player.addPotionEffect(effect);
             if (glowEnabled) {
                 player.getInventory().addItem(glowPowerupItem);
+            }
+            if (blockEnabled && map.isBlockHuntEnabled()) {
+                player.getInventory().setItem(8, changeBlockItem);
             }
         }
     }

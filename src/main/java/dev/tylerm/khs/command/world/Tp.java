@@ -13,7 +13,7 @@ import java.util.List;
 
 public class Tp implements ICommand {
     public void execute(Player sender, String[] args) {
-        Location test = new Location(args[0], 0, 0,0);
+        Location test = new Location(args[0], 0,0,0,0f,0f);
         if(!test.exists()) {
             sender.sendMessage(Config.errorPrefix + Localization.message("WORLD_DOESNT_EXIT"));
             return;
