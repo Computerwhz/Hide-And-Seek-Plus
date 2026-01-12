@@ -44,5 +44,4 @@ public class WorldInteractHandler implements Listener {
             event.setCancelled(true);
         }
     }
-
 }

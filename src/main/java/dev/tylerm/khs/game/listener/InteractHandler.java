@@ -28,22 +28,37 @@ import static dev.tylerm.khs.configuration.Localization.message;
 @SuppressWarnings("deprecation")
 public class InteractHandler implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!Main.getInstance().getBoard().contains(event.getPlayer())) return;
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null && blockedInteracts.contains(event.getClickedBlock().getType().name())) {
-            event.setCancelled(true);
-            return;
+
+        if (Main.getInstance().getBoard().isSpectator(event.getPlayer())) {
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+                if (event.getClickedBlock().getType().isInteractable()) {
+                    event.setCancelled(true);
+                }
+            }
         }
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK
+                && event.getClickedBlock() != null
+                && blockedInteracts.contains(event.getClickedBlock().getType().name())) {
+            event.setCancelled(true);
+        }
+
         ItemStack temp = event.getItem();
         if (temp == null) return;
+
         if (Main.getInstance().getGame().getStatus() == Status.STANDBY)
             onPlayerInteractLobby(temp, event);
+
         if (Main.getInstance().getGame().getStatus() == Status.PLAYING)
             onPlayerInteractGame(temp, event);
+
         if (Main.getInstance().getBoard().isSpectator(event.getPlayer()))
             onSpectatorInteract(temp, event);
     }
+
 
     private void onPlayerInteractLobby(ItemStack temp, PlayerInteractEvent event) {
         if (temp.isSimilar(lobbyLeaveItem)) {

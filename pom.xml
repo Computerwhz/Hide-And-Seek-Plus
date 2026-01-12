@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"><modelVersion>4.0.0</modelVersion>
     <groupId>dev.tylerm</groupId>
     <artifactId>HideAndSeekPlus</artifactId>
-    <version>1.0.1 PRE</version>
+    <version>1.1.0-PRE</version>
     <name>Hide And Seek Plus</name>
 
     <properties>
@@ -106,9 +106,9 @@
             <type>jar</type>
         </dependency>
         <dependency>
-            <groupId>com.comphenix.protocol</groupId>
+            <groupId>net.dmulloy2</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.0.0</version>
+            <version>5.4.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

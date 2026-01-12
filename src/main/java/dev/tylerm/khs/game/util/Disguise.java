@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
@@ -42,11 +43,8 @@ public class Disguise {
         this.material = material;
         this.solid = false;
         respawnFallingBlock();
-        for (Player other : Bukkit.getOnlinePlayers()){
-            if(!other.equals(player)){
-                other.hidePlayer(Main.getInstance(), hider);
-            }
-        }
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 0,false, false));
+
         if(Main.getInstance().supports(9)) {
             hidden.addEntry(player.getName());
         } else {
@@ -64,11 +62,8 @@ public class Disguise {
         }
         if(solid)
             sendBlockUpdate(blockLocation, Material.AIR);
-        for (Player other : Bukkit.getOnlinePlayers()){
-            if(!other.equals(hider)){
-                other.showPlayer(Main.getInstance(), hider);
-            }
-        }
+        hider.removePotionEffect(PotionEffectType.INVISIBILITY);
+
         if(Main.getInstance().supports(9)) {
             hidden.removeEntry(hider.getName());
         } else {
